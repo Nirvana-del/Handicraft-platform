@@ -29,7 +29,7 @@
     }
 
     .el-scrollbar__bar.is-vertical {
-      right: 0px;
+      right: 0;
     }
 
     .el-scrollbar {
@@ -89,7 +89,7 @@
       width: 54px !important;
 
       .svg-icon {
-        margin-right: 0px;
+        margin-right: 0;
       }
     }
 
@@ -139,7 +139,7 @@
   // mobile responsive
   .mobile {
     .main-container {
-      margin-left: 0px;
+      margin-left: 0;
     }
 
     .sidebar-container {

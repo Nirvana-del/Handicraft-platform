@@ -1,14 +1,14 @@
 <!-- 雷达图 -->
 <template>
   <el-card>
-    <template #header> 订单状态雷达图 </template>
-    <div :id="id" :class="className" :style="{ height, width }" />
+    <template #header> 订单状态图 </template>
+    <div :id="id" :class="className" :style="{ height, width }"/>
   </el-card>
 </template>
 
 <script setup lang="ts">
 import * as echarts from 'echarts';
-
+import {groupBy, toPairsIn} from 'lodash'
 const props = defineProps({
   id: {
     type: String,
@@ -27,74 +27,69 @@ const props = defineProps({
     type: String,
     default: '200px',
     required: true
+  },
+  dataSource: {
+    type: Array,
+    default: () => [],
+    required: true
   }
 });
-
+const newDataSource = computed(() => {
+  return toPairsIn(groupBy(props.dataSource, 'status')).map(item => {
+    return {
+      name: item[0],
+      value: item[1].length
+    }
+  })
+})
 const options = {
-  grid: {
-    left: '2%',
-    right: '2%',
-    bottom: '10%',
-    containLabel: true
+  title: {
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item'
   },
   legend: {
-    x: 'center',
-    y: 'bottom',
-    data: ['预定数量', '下单数量', '发货数量'],
-    textStyle: {
-      color: '#999'
-    }
-  },
-  radar: {
-    // shape: 'circle',
-    radius: '60%',
-    indicator: [
-      { name: '家用电器' },
-      { name: '服装箱包' },
-      { name: '运动户外' },
-      { name: '手机数码' },
-      { name: '汽车用品' },
-      { name: '家具厨具' }
-    ]
+    orient: 'vertical',
+    left: 'left'
   },
   series: [
     {
-      name: 'Budget vs spending',
-      type: 'radar',
-      itemStyle: {
-        borderRadius: 6,
-        color: function (params: any) {
-          //自定义颜色
-          const colorList = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C'];
-          return colorList[params.dataIndex];
+      name: '订单数量',
+      type: 'pie',
+      radius: '50%',
+      data: newDataSource.value,
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
         }
-      },
-      data: [
-        {
-          value: [400, 400, 400, 400, 400, 400],
-          name: '预定数量'
-        },
-        {
-          value: [300, 300, 300, 300, 300, 300],
-          name: '下单数量'
-        },
-        {
-          value: [200, 200, 200, 200, 200, 200],
-          name: '发货数量'
-        }
-      ]
+      }
     }
   ]
 };
-
+let myChart: echarts.ECharts;
+const setChartOption = (options: any) => {
+  myChart.setOption(options);
+}
 onMounted(() => {
-  const chart = echarts.init(
+  // 图表初始化
+  myChart = echarts.init(
     document.getElementById(props.id) as HTMLDivElement
   );
-  chart.setOption(options);
+  setChartOption(options);
 
+  // 大小自适应
   window.addEventListener('resize', () => {
-    chart.resize();
+    myChart.resize();
   });
 });
+
+watch(() => props.dataSource, () => {
+  console.log('监测到')
+  console.log(newDataSource.value)
+  options.series[0].data = newDataSource.value
+  setChartOption(options);
+})
 </script>

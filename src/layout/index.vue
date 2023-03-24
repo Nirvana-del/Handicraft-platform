@@ -48,7 +48,6 @@ watchEffect(() => {
     }
   }
 });
-
 function handleOutsideClick() {
   appStore.closeSideBar(false);
 }

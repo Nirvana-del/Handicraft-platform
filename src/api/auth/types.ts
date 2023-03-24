@@ -11,6 +11,30 @@ export interface LoginData {
    */
   password: string;
 }
+/**
+ * 注册数据类型
+ */
+export interface RegisterData {
+  username: string,
+  nickname: string,
+  mobile: string,
+  gender: number,
+  avatar: string,
+  email: string,
+  status: string,
+  password: string,
+  password_confirm: string,
+  roleType: string
+  [key: string]: any
+  /**
+   * 验证码Code
+   */
+  //verifyCode: string;
+  /**
+   * 验证码Code服务端缓存key(UUID)
+   */
+  // verifyCodeKey: string;
+}
 
 /**
  * 登录响应

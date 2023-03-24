@@ -1,11 +1,13 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import { useUserStoreHook } from '@/store/modules/user';
+import {ElMessage, ElMessageBox} from "element-plus";
 
 // 创建 axios 实例
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 50000,
-  headers: { 'Content-Type': 'application/json;charset=utf-8' }
+  // headers: { 'Content-Type': 'application/json;charset=utf-8' }
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 });
 
 // 请求拦截器
@@ -26,7 +28,8 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     const { code, msg } = response.data;
-    if (code === '00000') {
+    if (code === '20000') {
+    // if (code === '00000') {
       return response.data;
     }
     // 响应数据为二进制流处理(Excel导出)

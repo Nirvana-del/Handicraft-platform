@@ -6,6 +6,7 @@ export interface UserInfo {
   avatar: string;
   roles: string[];
   perms: string[];
+  userId: string;
 }
 
 /**

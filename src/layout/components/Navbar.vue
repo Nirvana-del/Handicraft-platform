@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
 import { useAppStore } from '@/store/modules/app';
 import { useTagsViewStore } from '@/store/modules/tagsView';
-import { useUserStore } from '@/store/modules/user';
+import {useUserStore, useUserStoreHook} from '@/store/modules/user';
 
 const appStore = useAppStore();
 const tagsViewStore = useTagsViewStore();
@@ -17,7 +17,8 @@ const { device } = storeToRefs(appStore); // 设备类型：desktop-宽屏设备
 function toggleSideBar() {
   appStore.toggleSidebar(true);
 }
-
+const {isVisitor} = useUserStoreHook()
+console.log(isVisitor)
 // 注销
 function logout() {
   ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
@@ -71,7 +72,7 @@ function logout() {
       </div>
 
       <!-- 用户头像 -->
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" v-if="!isVisitor" >
         <div class="flex justify-center items-center mx-2">
           <img
             :src="userStore.avatar + '?imageView2/1/w/80/h/80'"
@@ -84,15 +85,18 @@ function logout() {
             <router-link to="/">
               <el-dropdown-item>{{ $t('navbar.dashboard') }}</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/hxrui">
-              <el-dropdown-item>Github</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://gitee.com/haoxr">
-              <el-dropdown-item>{{ $t('navbar.gitee') }}</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://www.cnblogs.com/haoxianrui/">
-              <el-dropdown-item>{{ $t('navbar.document') }}</el-dropdown-item>
-            </a>
+            <router-link to="/chat">
+              <el-dropdown-item>{{ $t('navbar.message') }}</el-dropdown-item>
+            </router-link>
+<!--            <a target="_blank" href="https://github.com/hxrui">-->
+<!--              <el-dropdown-item>Github</el-dropdown-item>-->
+<!--            </a>-->
+<!--            <a target="_blank" href="https://gitee.com/haoxr">-->
+<!--              <el-dropdown-item>{{ $t('navbar.gitee') }}</el-dropdown-item>-->
+<!--            </a>-->
+<!--            <a target="_blank" href="https://www.cnblogs.com/haoxianrui/">-->
+<!--              <el-dropdown-item>{{ $t('navbar.document') }}</el-dropdown-item>-->
+<!--            </a>-->
             <el-dropdown-item divided @click="logout">
               {{ $t('navbar.logout') }}
             </el-dropdown-item>

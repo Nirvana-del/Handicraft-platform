@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router';
 
 export const Layout = () => import('@/layout/index.vue');
 
@@ -7,7 +7,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/redirect',
     component: Layout,
-    meta: { hidden: true },
+    meta: {hidden: true},
     children: [
       {
         path: '/redirect/:path(.*)',
@@ -15,48 +15,32 @@ export const constantRoutes: RouteRecordRaw[] = [
       }
     ]
   },
-
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
-    meta: { hidden: true }
+    meta: {hidden: true}
   },
-
   {
-    path: '/',
+    path: '/visitor',
+    redirect: '/visitor/goods',
+    name: 'GoodsSearch',
+    meta: {hidden: true},
     component: Layout,
-    redirect: '/dashboard',
     children: [
       {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index.vue'),
-        name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'homepage', affix: true }
+        path: 'goods',
+        component: () => import('@/views/Buyer-User/goods-search/index.vue'),
+        name: 'GoodsList',
+        meta: {title: 'goodsList', icon: 'goods-list', affix: true}
       },
       {
-        path: '401',
-        component: () => import('@/views/error-page/401.vue'),
-        meta: { hidden: true }
+        path: 'detail',
+        component: () => import('@/views/Buyer-User/goods-search/detail.vue'),
+        name: 'GoodsDetail',
+        meta: {hidden: true}
       },
-      {
-        path: '/404',
-        component: () => import('@/views/error-page/404.vue'),
-        meta: { hidden: true }
-      }
     ]
   }
-
-  // 外部链接
-  /*{
-        path: '/external-link',
-        component: Layout,
-        children: [
-            {
-                path: 'https://www.cnblogs.com/haoxianrui/',
-                meta: { title: '外部链接', icon: 'link' }
-            }
-        ]
-    }*/
   // 多级嵌套路由
   /* {
          path: '/nested',
@@ -98,7 +82,227 @@ export const constantRoutes: RouteRecordRaw[] = [
          ]
      }*/
 ];
+export const sellerRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index.vue'),
+        name: 'Dashboard',
+        meta: {title: 'dashboard', icon: 'homepage', affix: true}
+      },
+      {
+        path: '401',
+        component: () => import('@/views/error-page/401.vue'),
+        meta: {hidden: true}
+      },
+      {
+        path: '/404',
+        component: () => import('@/views/error-page/404.vue'),
+        meta: {hidden: true}
+      }
+    ]
+  },
 
+  {
+    path: '/chat',
+    redirect: '/chat/message',
+    name: 'ChatMessage',
+    meta: {title: 'chatMessage', icon: 'goods', hidden: true},
+    component: Layout,
+    children:[
+      {
+        path: 'message',
+        component: () => import('@/components/UserChat/index.vue'),
+        name: 'UserChat',
+        meta: {hidden: true}
+      }
+    ]
+  },
+  {
+    path: '/goods-management',
+    redirect: '/goods-management/goods',
+    name: 'Handicrafts',
+    meta: {title: 'handicrafts', icon: 'goods'},
+    component: Layout,
+    children: [
+      {
+        path: 'goods',
+        component: () => import('@/views/Seller-User/goods-management/goods/index.vue'),
+        name: 'goodsList',
+        meta: {title: 'goodsList', icon: 'goods-list', affix: true}
+      },
+      {
+        path: 'grounding',
+        component: () => import('@/views/Seller-User/goods-management/goods/detail.vue'),
+        name: 'Grounding',
+        meta: {title: 'grounding', icon: 'publish', affix: true}
+      },
+      // {
+      //   path: 'category',
+      //   component: () => import('@/views/Seller-User/goods-management/category/index.vue'),
+      //   name: 'Category',
+      //   meta: {title: 'category', icon: 'menu', affix: true}
+      // },
+      {
+        path: 'goods-detail',
+        component: () => import('@/views/Seller-User/goods-management/goods/detail.vue'),
+        name: 'GoodsDetail',
+        meta: {hidden: true}
+      },
+    ]
+  },
+  {
+    path: '/order',
+    redirect: '/order/info',
+    name: 'OrderManagement',
+    meta: {title: 'orderManagement', icon: 'shopping'},
+    component: Layout,
+    children: [
+      {
+        path: 'info',
+        component: () => import('@/views/Seller-User/order-management/index.vue'),
+        name: 'OrderList',
+        meta: {title: 'orderList', icon: 'order', affix: false}
+      }
+    ]
+  },
+]
+
+export const buyerRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index.vue'),
+        name: 'Dashboard',
+        meta: {title: 'dashboard', icon: 'homepage', affix: true}
+      },
+      {
+        path: '401',
+        component: () => import('@/views/error-page/401.vue'),
+        meta: {hidden: true}
+      },
+      {
+        path: '/404',
+        component: () => import('@/views/error-page/404.vue'),
+        meta: {hidden: true}
+      }
+    ]
+  },
+
+  {
+    path: '/chat',
+    redirect: '/chat/message',
+    name: 'ChatMessage',
+    meta: {title: 'chatMessage', icon: 'goods', hidden: true},
+    component: Layout,
+    children:[
+      {
+        path: 'message',
+        component: () => import('@/components/UserChat/index.vue'),
+        name: 'UserChat',
+        meta: {hidden: true}
+      }
+    ]
+  },
+  {
+    path: '/goods-search',
+    redirect: '/goods-search/goods',
+    name: 'GoodsSearch',
+    meta: {title: 'goodsSearch', icon: 'goods'},
+    component: Layout,
+    children: [
+      {
+        path: 'goods',
+        component: () => import('@/views/Buyer-User/goods-search/index.vue'),
+        name: 'GoodsList',
+        meta: {title: 'goodsList', icon: 'goods-list', affix: true}
+      },
+      {
+        path: 'detail',
+        component: () => import('@/views/Buyer-User/goods-search/detail.vue'),
+        name: 'GoodsDetail',
+        meta: {hidden: true}
+      },
+    ]
+  },
+  {
+    path: '/address',
+    redirect: '/address/info',
+    name: 'AddressManagement',
+    meta: {title: 'addressManagement', icon: 'address'},
+    component: Layout,
+    children: [
+      {
+        path: 'info',
+        component: () => import('@/views/Buyer-User/address-control/index.vue'),
+        name: 'AddressInfo',
+        meta: {title: 'addressInfo', icon: 'address', affix: true}
+      }
+    ]
+  },
+  {
+    path: '/cart',
+    redirect: '/cart/info',
+    name: 'CartManagement',
+    meta: {title: 'cartManagement', icon: 'cart'},
+    component: Layout,
+    children: [
+      {
+        path: 'info',
+        component: () => import('@/views/Buyer-User/shopping-cart/index.vue'),
+        name: 'CartInfo',
+        meta: {title: 'cartInfo', icon: 'cart', affix: true}
+      }
+    ]
+  },
+  {
+    path: '/order',
+    redirect: '/order/info',
+    name: 'OrderManagement',
+    meta: {title: 'orderManagement', icon: 'order'},
+    component: Layout,
+    children: [
+      {
+        path: 'info',
+        component: () => import('@/views/Buyer-User/user-order/index.vue'),
+        name: 'OrderInfo',
+        meta: {title: 'orderInfo', icon: 'order', affix: true}
+      }
+    ]
+  },
+]
+
+export const visitorRoutes: RouteRecordRaw[] = [
+  {
+    path: '/visitor',
+    redirect: '/visitor/goods',
+    name: 'GoodsSearch',
+    meta: {title: 'goodsSearch', icon: 'goods'},
+    component: Layout,
+    children: [
+      {
+        path: 'goods',
+        component: () => import('@/views/Buyer-User/goods-search/index.vue'),
+        name: 'GoodsList',
+        meta: {title: 'goodsList', icon: 'goods-list', affix: true}
+      },
+      {
+        path: 'detail',
+        component: () => import('@/views/Buyer-User/goods-search/detail.vue'),
+        name: 'GoodsDetail',
+        meta: {hidden: true}
+      },
+    ]
+  }
+]
 /**
  * 创建路由
  */
@@ -106,14 +310,14 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: constantRoutes as RouteRecordRaw[],
   // 刷新时，滚动条位置还原
-  scrollBehavior: () => ({ left: 0, top: 0 })
+  scrollBehavior: () => ({left: 0, top: 0})
 });
 
 /**
  * 重置路由
  */
 export function resetRouter() {
-  router.replace({ path: '/login' });
+  router.replace({path: '/login'});
   location.reload();
 }
 

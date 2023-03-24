@@ -11,7 +11,7 @@ export function uploadFileApi(file: File): AxiosPromise<FileInfo> {
   const formData = new FormData();
   formData.append('file', file);
   return request({
-    url: '/api/v1/files',
+    url: '/handiraft/files',
     method: 'post',
     data: formData,
     headers: {

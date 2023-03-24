@@ -51,5 +51,41 @@ declare global {
      */
     children?: OptionType[];
   }
+  interface DialogType  {
+    title: string;
+    visible: boolean;
+  }
+
+  type Product = {
+    id: number,
+    name: string,
+    categoryId?: number,
+    categoryName?: string,
+    originPrice: number,
+    sales?: number,
+    picUrl?: string,
+    album?: string[],
+    status?: number,
+    stock?: number, // 库存
+    seller?: string,
+    detail?: string,
+    [key: string]: any
+  }
+  // "unit": null,
+  //   "description": "111",
+  //   "status": 0,
+  //   "createTime": "2023-03-20T13:23:25.000+00:00",
+  //   "updateTime": null,
+  //   "stock": 10,
+  //   "seller": "admin",
+  //   "detail": null
+  type CartItem = {
+    id?: string,
+    buyerUsername: string
+    count: number,
+    selected: boolean,
+    handicrafts: Product
+  }
+
 }
 export {};

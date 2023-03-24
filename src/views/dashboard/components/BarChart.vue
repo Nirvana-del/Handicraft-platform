@@ -1,13 +1,15 @@
 <!--  线 + 柱混合图 -->
 <template>
   <el-card>
-    <template #header> 业绩柱状图 </template>
-    <div :id="id" :class="className" :style="{ height, width }" />
+    <template #header> {{isSeller ? '最近七天业绩情况' : '最近七天支出情况'}} </template>
+    <div :id="id" :class="className" :style="{ height, width }"/>
   </el-card>
 </template>
 
 <script setup lang="ts">
 import * as echarts from 'echarts';
+import {useUserStoreHook} from "@/store/modules/user";
+const {isSeller} = useUserStoreHook()
 
 const props = defineProps({
   id: {
@@ -27,9 +29,21 @@ const props = defineProps({
     type: String,
     default: '200px',
     required: true
+  },
+  dataSource: {
+    type: Array,
+    default: () => [],
+    required: true
   }
 });
-
+const xData = computed(() => {
+  return props.dataSource.map((item: any) => (item.date))
+})
+const yData = computed(() => {
+  return props.dataSource.map((item: any) => (item.amount))
+})
+console.log(xData.value)
+console.log(yData.value)
 const options = {
   grid: {
     left: '2%',
@@ -49,98 +63,53 @@ const options = {
   legend: {
     x: 'center',
     y: 'bottom',
-    data: ['收入', '毛利润', '收入增长率', '利润增长率'],
+    data: [`${isSeller ? '收入' : '支出'}`],
     textStyle: {
       color: '#999'
     }
   },
-  xAxis: [
-    {
-      type: 'category',
-      data: ['浙江', '北京', '上海', '广东', '深圳'],
-      axisPointer: {
-        type: 'shadow'
-      }
+  xAxis: {
+    type: 'category',
+    data: xData.value,
+    axisPointer: {
+      type: 'shadow'
     }
-  ],
-  yAxis: [
-    {
-      type: 'value',
-      min: 0,
-      max: 10000,
-      interval: 2000,
-      axisLabel: {
-        formatter: '{value} '
-      }
-    },
-    {
-      type: 'value',
-      min: 0,
-      max: 100,
-      interval: 20,
-      axisLabel: {
-        formatter: '{value}%'
-      }
-    }
-  ],
+  },
+  yAxis: {
+    type: 'value',
+  },
   series: [
     {
-      name: '收入',
-      type: 'bar',
-      data: [7000, 7100, 7200, 7300, 7400],
-      barWidth: 20,
-      itemStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: '#83bff6' },
-          { offset: 0.5, color: '#188df0' },
-          { offset: 1, color: '#188df0' }
-        ])
-      }
-    },
-    {
-      name: '毛利润',
-      type: 'bar',
-      data: [8000, 8200, 8400, 8600, 8800],
-      barWidth: 20,
-      itemStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: '#25d73c' },
-          { offset: 0.5, color: '#1bc23d' },
-          { offset: 1, color: '#179e61' }
-        ])
-      }
-    },
-    {
-      name: '收入增长率',
+      name: `${isSeller ? '收入' : '支出'}`,
       type: 'line',
-      yAxisIndex: 1,
-      data: [60, 65, 70, 75, 80],
+      data: yData.value,
       itemStyle: {
         color: '#67C23A'
       }
     },
-    {
-      name: '利润增长率',
-      type: 'line',
-      yAxisIndex: 1,
-      data: [70, 75, 80, 85, 90],
-      itemStyle: {
-        color: '#409EFF'
-      }
-    }
   ]
 };
 
+let myChart: echarts.ECharts;
+const setChartOption = (options: any) => {
+  myChart.setOption(options);
+}
 onMounted(() => {
   // 图表初始化
-  const chart = echarts.init(
+  myChart = echarts.init(
     document.getElementById(props.id) as HTMLDivElement
   );
-  chart.setOption(options);
+  setChartOption(options);
 
   // 大小自适应
   window.addEventListener('resize', () => {
-    chart.resize();
+    myChart.resize();
   });
 });
+
+watch(() => props.dataSource, () => {
+  options.xAxis.data = xData.value
+  options.series[0].data = yData.value
+  setChartOption(options);
+})
 </script>

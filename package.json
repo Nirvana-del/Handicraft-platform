@@ -1,5 +1,5 @@
 {
-  "name": "vue3-element-admin",
+  "name": "Handicraft platform",
   "version": "2.0.0",
   "scripts": {
     "dev": "vite serve --mode development",
@@ -10,6 +10,7 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
     "@vueuse/core": "^9.1.1",
     "@wangeditor/editor": "^5.0.0",
     "@wangeditor/editor-for-vue": "^5.1.10",
@@ -21,6 +22,7 @@
     "path-to-regexp": "^6.2.0",
     "pinia": "^2.0.12",
     "screenfull": "^6.0.0",
+    "socket.io-client": "^2.3.1",
     "vue": "^3.2.45",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.1.6"
@@ -55,6 +57,6 @@
     "vue-tsc": "^0.35.0"
   },
   "repository": "https://gitee.com/youlaiorg/vue3-element-admin.git",
-  "author": "有来开源组织",
+  "author": "山上沙锅",
   "license": "MIT"
 }

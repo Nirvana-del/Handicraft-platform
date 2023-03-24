@@ -8,7 +8,7 @@
     :before-upload="handleBeforeUpload"
     :http-request="uploadFile"
   >
-    <img v-if="imgUrl" :src="imgUrl" class="single" />
+    <img v-if="imgUrl" :src="imgUrl" class="single"  alt=""/>
     <el-icon v-else class="single-uploader-icon"><i-ep-plus /></el-icon>
   </el-upload>
 </template>
@@ -42,7 +42,9 @@ const imgUrl = computed<string | undefined>({
  * @param options
  */
 async function uploadFile(options: UploadRequestOptions): Promise<any> {
+  console.log(options.file)
   const { data: fileInfo } = await uploadFileApi(options.file);
+  console.log(fileInfo)
   imgUrl.value = fileInfo.url;
 }
 

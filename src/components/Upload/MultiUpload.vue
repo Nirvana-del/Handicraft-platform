@@ -133,6 +133,7 @@ function handleBeforeUpload(file: UploadRawFile) {
  * 预览图片
  */
 const previewImg: UploadProps['onPreview'] = uploadFile => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   previewImgUrl.value = uploadFile.url!;
   dialogVisible.value = true;
 };

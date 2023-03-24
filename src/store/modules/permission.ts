@@ -70,7 +70,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
 // setup
 export const usePermissionStore = defineStore('permission', () => {
   // state
-  const routes = ref<RouteRecordRaw[]>([]);
+  const routes = ref<RouteRecordRaw[]>(constantRoutes);
 
   // actions
   function setRoutes(newRoutes: RouteRecordRaw[]) {
