@@ -32,13 +32,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Buyer-User/goods-search/index.vue'),
         name: 'GoodsList',
         meta: {title: 'goodsList', icon: 'goods-list', affix: true}
-      },
-      {
-        path: 'detail',
-        component: () => import('@/views/Buyer-User/goods-search/detail.vue'),
-        name: 'GoodsDetail',
-        meta: {hidden: true}
-      },
+      }
     ]
   }
   // 多级嵌套路由
@@ -106,7 +100,6 @@ export const sellerRoutes: RouteRecordRaw[] = [
       }
     ]
   },
-
   {
     path: '/chat',
     redirect: '/chat/message',
@@ -141,12 +134,12 @@ export const sellerRoutes: RouteRecordRaw[] = [
         name: 'Grounding',
         meta: {title: 'grounding', icon: 'publish', affix: true}
       },
-      // {
-      //   path: 'category',
-      //   component: () => import('@/views/Seller-User/goods-management/category/index.vue'),
-      //   name: 'Category',
-      //   meta: {title: 'category', icon: 'menu', affix: true}
-      // },
+      {
+        path: 'category',
+        component: () => import('@/views/Seller-User/goods-management/category/index.vue'),
+        name: 'Category',
+        meta: {title: 'category', icon: 'menu', affix: true}
+      },
       {
         path: 'goods-detail',
         component: () => import('@/views/Seller-User/goods-management/goods/detail.vue'),
@@ -167,6 +160,21 @@ export const sellerRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Seller-User/order-management/index.vue'),
         name: 'OrderList',
         meta: {title: 'orderList', icon: 'order', affix: false}
+      }
+    ]
+  },
+  {
+    path: '/coupon',
+    redirect: '/coupon/list',
+    name: 'CouponManagement',
+    meta: {title: 'couponManagement', icon: 'shopping'},
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/Seller-User/coupon-management/index.vue'),
+        name: 'CouponList',
+        meta: {title: 'couponList', icon: 'order', affix: false}
       }
     ]
   },
@@ -224,13 +232,7 @@ export const buyerRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Buyer-User/goods-search/index.vue'),
         name: 'GoodsList',
         meta: {title: 'goodsList', icon: 'goods-list', affix: true}
-      },
-      {
-        path: 'detail',
-        component: () => import('@/views/Buyer-User/goods-search/detail.vue'),
-        name: 'GoodsDetail',
-        meta: {hidden: true}
-      },
+      }
     ]
   },
   {
@@ -252,14 +254,14 @@ export const buyerRoutes: RouteRecordRaw[] = [
     path: '/cart',
     redirect: '/cart/info',
     name: 'CartManagement',
-    meta: {title: 'cartManagement', icon: 'cart'},
+    meta: {title: 'cartManagement', icon: 'shopping'},
     component: Layout,
     children: [
       {
         path: 'info',
         component: () => import('@/views/Buyer-User/shopping-cart/index.vue'),
         name: 'CartInfo',
-        meta: {title: 'cartInfo', icon: 'cart', affix: true}
+        meta: {title: 'cartInfo', icon: 'shopping', affix: true}
       }
     ]
   },
@@ -278,6 +280,27 @@ export const buyerRoutes: RouteRecordRaw[] = [
       }
     ]
   },
+  {
+    path: '/coupon',
+    redirect: '/coupon/list',
+    name: 'CouponManagement',
+    meta: {title: 'couponManagement', icon: 'shopping'},
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/Buyer-User/coupon-management/index.vue'),
+        name: 'CouponList',
+        meta: {title: 'couponList', icon: 'dict', affix: false}
+      },
+      {
+        path: 'my-collect',
+        component: () => import('@/views/Buyer-User/coupon-management/my-collect.vue'),
+        name: 'MyCoupon',
+        meta: {title: 'myCoupon', icon: 'brand', affix: false}
+      }
+    ]
+  },
 ]
 
 export const visitorRoutes: RouteRecordRaw[] = [
@@ -293,13 +316,7 @@ export const visitorRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Buyer-User/goods-search/index.vue'),
         name: 'GoodsList',
         meta: {title: 'goodsList', icon: 'goods-list', affix: true}
-      },
-      {
-        path: 'detail',
-        component: () => import('@/views/Buyer-User/goods-search/detail.vue'),
-        name: 'GoodsDetail',
-        meta: {hidden: true}
-      },
+      }
     ]
   }
 ]

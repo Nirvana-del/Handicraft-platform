@@ -12,10 +12,11 @@ import {
   getBuyerOrderList,
   getProductInfoByOrderId,
   getLogisticsStatusByOrderId,
-  cancelOrderApi, payOrderApi, receiveProductApi
+  cancelOrderApi, payOrderApi, payOrderByCouponApi,receiveProductApi
 } from '@/api/order';
-import {Search, Refresh} from '@element-plus/icons-vue';
+import {Search, Refresh, ArrowDown} from '@element-plus/icons-vue';
 import {Logistics, Order, OrderQuery} from '@/api/order/types';
+import {getCurrentCouponApi} from "@/api/coupon";
 
 const queryFormRef = ref(ElForm);
 
@@ -32,17 +33,12 @@ const orderStatusMap = {
   '已退款': '已退款'
 };
 
-const payTypeMap = {
-  1: '支付宝',
-  2: '微信',
-  3: '会员余额',
-};
-
 const state = reactive({
   loading: false,
   ids: [],
   single: true,
   multiple: true,
+  couponVisible: false,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -55,6 +51,8 @@ const state = reactive({
     visible: false,
     // eslint-disable-next-line no-undef
   } as DialogType,
+  allCoupon: [],
+  myCoupon: undefined,
   dialogVisible: false,
   orderDetail: {
     order: {
@@ -79,13 +77,25 @@ const state = reactive({
   },
   orderSourceMap,
   orderStatusMap,
-  payTypeMap,
   orderDelivery: {} as Logistics,
   payForm: '',
-  payDialogVisible: false
+  payDialogVisible: false,
+  currentOrderId: ''
 });
 
-const {loading, queryParams, orderList, total, orderDelivery, dialog, payDialogVisible} = toRefs(state);
+const {
+  loading,
+  queryParams,
+  orderList,
+  total,
+  orderDelivery,
+  dialog,
+  payDialogVisible,
+  couponVisible,
+  allCoupon,
+  myCoupon,
+  currentOrderId
+} = toRefs(state);
 
 const handleQuery = async () => {
   state.loading = false;
@@ -122,20 +132,66 @@ const cancelOrder = async (order: any) => {
 }
 
 const confirmPay = async (order: any) => {
-  // await cancelOrderApi(order.id)
-  const res = await payOrderApi(order.id)
-  payDialogVisible.value = true
-  console.log(res.data.response) // 支付宝内嵌表单
-  // state.payForm = res.data.response;
+  console.log(order)
+  ElMessageBox.confirm(
+    '确定支付吗?',
+    '确定支付',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(async () => {
+      // await getOrderList()
+      const res = await getCurrentCouponApi(order.seller)
+      console.log(res)
+      allCoupon.value = res.data.myCoupon
+      // dialog.value.visible = false
+      couponVisible.value = true
+      currentOrderId.value = order.id
+      // const res2 = await payOrderApi(order.id)
+      // payDialogVisible.value = true
+      // console.log(res2.data.response) // 支付宝内嵌表单
+      // state.payForm = res2.data.response;
+      // console.log(couponVisible.value)
+    })
+    .catch(async () => {
+      // await cancelOrderApi(order.id)
+
+    })
+
   // document.querySelector("body")!.innerHTML = res.data.response;
   // document.forms[0].submit();
-  await getOrderList()
 }
+
 const confirmReceive = async (order: any) => {
   const res = await receiveProductApi(order.id)
   console.log(res)
   await getOrderList()
 }
+
+async function payByCoupon() {
+  console.log(myCoupon.value)
+  console.log(currentOrderId.value)
+  if (myCoupon.value === undefined){
+    const res = await payOrderApi(currentOrderId.value)
+    payDialogVisible.value = true
+    console.log(res.data.response) // 支付宝内嵌表单
+    state.payForm = res.data.response;
+    couponVisible.value = false
+    console.log(couponVisible.value)
+  }else {
+    const res = await payOrderByCouponApi(currentOrderId.value, myCoupon.value)
+    payDialogVisible.value = true
+    console.log(res.data.response) // 支付宝内嵌表单
+    state.payForm = res.data.response;
+    console.log(couponVisible.value)
+    couponVisible.value = false
+  }
+  myCoupon.value = undefined
+}
+
 onMounted(() => {
   handleQuery();
   getOrderList()
@@ -158,20 +214,6 @@ onMounted(() => {
 
     <!-- 搜索表单 -->
     <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-      <el-form-item prop="orderSn">
-        <el-input v-model="queryParams.orderSn" placeholder="订单号"/>
-      </el-form-item>
-      <el-form-item prop="dateRange">
-        <el-date-picker
-          v-model="queryParams.dateRange"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        />
-      </el-form-item>
       <el-form-item prop="status">
         <el-select
           v-model="queryParams.status"
@@ -198,11 +240,11 @@ onMounted(() => {
       v-loading="loading"
       :data="orderList"
       border>
-      <el-table-column type="expand" width="100" label="订单商品">
+      <el-table-column type="expand" width="100" label="订单手工艺品">
         <template #default="scope">
           <el-table :data="scope.row.orderItems" border>
             <el-table-column label="序号" type="index" width="100"/>
-            <el-table-column label="商品编号" align="center" prop="id"/>
+            <el-table-column label="手工艺品编号" align="center" prop="id"/>
             <el-table-column label="图片" prop="picUrl">
               <template #default="scope">
                 <img :src="scope.row.picUrl" width="40" alt=""/>
@@ -222,7 +264,7 @@ onMounted(() => {
       </el-table-column>
 
       <el-table-column align="center" prop="orderSn" label="订单编号"/>
-
+      <el-table-column label="商家" align="center" prop="seller"/>
       <el-table-column align="center" label="订单状态">
         <template #default="scope">
           <el-tag>{{ scope.row.status }}</el-tag>
@@ -235,7 +277,7 @@ onMounted(() => {
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="totalQuantity" label="商品数量">
+      <el-table-column align="center" prop="totalQuantity" label="手工艺品数量">
         <template #default="scope">
           {{ scope.row.totalQuantity }}
         </template>
@@ -261,6 +303,9 @@ onMounted(() => {
           <el-button v-if="scope.row.status === '未支付'" size="small" type="danger" @click="confirmPay(scope.row)">
             确认支付
           </el-button>
+          <!--          <el-button v-if="scope.row.status === '未支付'" size="small" type="danger" @click="confirmPay(scope.row)">-->
+          <!--            优惠券支付-->
+          <!--          </el-button>-->
           <el-button v-if="scope.row.status === '已支付'" size="small" type="danger" @click="confirmReceive(scope.row)">
             确认收货
           </el-button>
@@ -291,6 +336,19 @@ onMounted(() => {
           <el-tag size="small">{{ orderDelivery.remark }}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
+    </el-dialog>
+    <el-dialog v-model="couponVisible" title="选择优惠券">
+      <el-select v-model="myCoupon">
+        <el-option v-for="item in allCoupon" :key="item.id" :label="item.name" :value="item.id"></el-option>
+      </el-select>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="couponVisible = false">取消</el-button>
+        <el-button type="primary" @click="payByCoupon">
+          确定
+        </el-button>
+      </span>
+      </template>
     </el-dialog>
   </div>
 </template>

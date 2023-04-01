@@ -7,11 +7,11 @@
         :model="goodsInfo"
         label-width="120px"
       >
-        <el-form-item label="商品名称" prop="name">
+        <el-form-item label="手工艺品名称" prop="name">
           <el-input style="width: 400px" v-model="goodsInfo.name" />
         </el-form-item>
 
-<!--        <el-form-item label="商品品牌" prop="brandId">-->
+<!--        <el-form-item label="手工艺品品牌" prop="brandId">-->
 <!--          <el-select v-model="goodsInfo.brandId" style="width: 400px" clearable>-->
 <!--            <el-option-->
 <!--              v-for="item in brandOptions"-->
@@ -30,15 +30,11 @@
 <!--          <el-input style="width: 400px" v-model="goodsInfo.price" />-->
 <!--        </el-form-item>-->
 
-        <el-form-item label="商品主图" prop="picUrl">
+        <el-form-item label="手工艺品主图" prop="picUrl">
           <single-upload v-model="goodsInfo.picUrl"></single-upload>
         </el-form-item>
 
-        <el-form-item label="商品轮播图">
-          <multi-upload v-model="goodsInfo.album"></multi-upload>
-        </el-form-item>
-
-        <el-form-item label="商品简介">
+        <el-form-item label="手工艺品简介">
           <el-input
             type="textarea"
             :autosize="{ minRows: 3, maxRows: 6 }"
@@ -46,15 +42,15 @@
           />
         </el-form-item>
 
-        <el-form-item label="商品详情" prop="detail">
+        <el-form-item label="手工艺品详情" prop="detail">
           <editor v-model="goodsInfo.detail" style="height: 600px" />
         </el-form-item>
       </el-form>
     </div>
     <div class="component-container__footer">
-      <el-button @click="handlePrev">上一步，选择商品分类</el-button>
+      <el-button @click="handlePrev">上一步，选择手工艺品分类</el-button>
       <el-button type="primary" @click="handleNext"
-        >下一步，设置商品属性</el-button
+        >下一步，设置手工艺品属性</el-button
       >
     </div>
   </div>
@@ -92,11 +88,11 @@ const goodsInfo: any = computed({
 const state = reactive({
   brandOptions: [] as Array<any>,
   rules: {
-    name: [{ required: true, message: '请填写商品名称', trigger: 'blur' }],
+    name: [{ required: true, message: '请填写手工艺品名称', trigger: 'blur' }],
     originPrice: [{ required: true, message: '请填写零售价', trigger: 'blur' }],
     price: [{ required: true, message: '请填写促销价', trigger: 'blur' }],
-    brandId: [{ required: true, message: '请选择商品品牌', trigger: 'blur' }],
-    picUrl: [{ required: true, message: '请上传商品主图', trigger: 'blur' }],
+    brandId: [{ required: true, message: '请选择手工艺品品牌', trigger: 'blur' }],
+    picUrl: [{ required: true, message: '请上传手工艺品主图', trigger: 'blur' }],
   },
 });
 

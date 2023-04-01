@@ -3,8 +3,9 @@ import {getCurrentInstance, onMounted} from 'vue'
 import {useUserStoreHook} from "@/store/modules/user";
 import {useRoute} from "vue-router";
 import {getChatList, MsgType, sendMessageApi} from "@/api/chat";
+import {ElMessage} from "element-plus"
 
-const wsBaseUrl = 'ws://127.0.0.1:8899/handiraft/chat/'
+const wsBaseUrl = 'ws://10.33.36.231:8899/handiraft/chat/'
 const state = reactive({
   textarea: "",
   list: [] as any[],
@@ -32,7 +33,6 @@ onMounted(() => {
     curSessionId.value = sellerId as string
     initWebSocket(userId, sellerId as string);
   }
-
   // proxy.$socket.on('connect', () => {
   //   console.log('socketio-connect')
   // })
@@ -77,7 +77,7 @@ const websocketOnmessage = (e: any) => {
     newObj[key] = value
   })
   console.log(newObj)
-  if(!state.sessionList_already.find((item: any) => item.username === newObj.username)){
+  if (!state.sessionList_already.find((item: any) => item.username === newObj.username)) {
     sessionListAlready()
   }
   state.list.push(newObj)
@@ -99,6 +99,7 @@ const websocketClose = (e: any) => {
   console.log("connection closed", e);
 }
 // 消息发送
+
 const sendMsg = async () => {
   if (state.curSessionId == '') {
     return ElMessage.error("请选择左边的对话框开始聊天!")
@@ -127,7 +128,7 @@ const sendMsg = async () => {
 const sessionListAlready = async () => {
   const res = await getChatList(userId)
   console.log(res.data.data.chatList)
-  sessionList_already.value = res.data.data.chatList
+  sessionList_already.value = res.data.data.chatList.map((item: any) => JSON.parse(item)).filter((item: any) => !!item.recipienHeadUrl && !!item.screenName)
 }
 // 登录or注册
 // 获取可建立会话列表

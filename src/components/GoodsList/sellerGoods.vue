@@ -236,9 +236,11 @@ function handleSelectionChange(selection: any) {
           </template>
         </el-table-column>
         <el-table-column label="商品类目" prop="categoryName" min-width="100" align="center"/>
-        <el-table-column align="center" label="零售价" prop="handicrafts.originPrice">
+        <el-table-column align="center" label="零售价" prop="originPrice">
           <template #default="scope">{{
-              moneyFormatter(scope.row.originPrice)
+              // moneyFormatter(scope.row.originPrice)
+              // 改为
+              scope.row.originPrice
             }}
           </template>
         </el-table-column>

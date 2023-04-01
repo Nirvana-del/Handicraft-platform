@@ -53,6 +53,9 @@ export function registerSellerApi(data: RegisterData, avatar: string): AxiosProm
   return request({
     url: '/handiraft/users/registSeller',
     method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
     data: {
       username,
       nickname,

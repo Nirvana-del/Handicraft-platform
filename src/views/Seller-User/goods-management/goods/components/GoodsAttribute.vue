@@ -3,7 +3,7 @@
     <div class="component-container__main">
       <el-card class="box-card">
         <template #header>
-          <span>商品属性</span>
+          <span>手工艺品属性</span>
           <el-button
             style="float: right"
             type="success"
@@ -69,9 +69,9 @@
       </el-card>
     </div>
     <div class="component-container__footer">
-      <el-button @click="handlePrev">上一步，填写商品信息</el-button>
+      <el-button @click="handlePrev">上一步，填写手工艺品信息</el-button>
       <el-button type="primary" @click="handleNext"
-        >下一步，设置商品库存</el-button
+        >下一步，设置手工艺品库存</el-button
       >
     </div>
   </div>
@@ -102,14 +102,14 @@ const goodsInfo: any = computed({
 watch(
   () => goodsInfo.value.categoryId,
   (newVal) => {
-    // 商品编辑不加载分类下的属性
+    // 手工艺品编辑不加载分类下的属性
     const goodsId = goodsInfo.value.id;
     if (goodsId) {
       return false;
     }
-    // 商品新增加载默认分类下的属性
+    // 手工艺品新增加载默认分类下的属性
     if (newVal) {
-      // type=2 商品分类下的属性
+      // type=2 手工艺品分类下的属性
       // listAttributes({ categoryId: newVal, type: 2 }).then((response) => {
       //   const attrList = response.data;
       //   if (attrList && attrList.length > 0) {

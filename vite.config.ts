@@ -49,7 +49,8 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           // target: 'http://vapi.youlai.tech',
           // 本地API地址
           // target: 'https://67q2782k94.yicp.fun',
-          target: 'http://localhost:8080',
+          // target: 'http://10.33.36.231:8899',
+          target: 'http://10.33.36.231:8080',
           changeOrigin: true,
           rewrite: path =>
             path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
@@ -58,7 +59,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           // 线上API地址
           // target: 'http://vapi.youlai.tech',
           // 本地API地址
-          target: 'http://localhost:8899',
+          target: 'http://10.33.36.231:8899',
           changeOrigin: true,
           rewrite: path =>
             path.replace(new RegExp('^' + '/msg'), '')

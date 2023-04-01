@@ -6,10 +6,10 @@
       finish-status="success"
       simple
     >
-      <el-step title="选择商品分类" />
-      <el-step title="填写商品信息" />
-<!--      <el-step title="设置商品属性" />-->
-      <el-step title="设置商品库存" />
+      <el-step title="选择手工艺品分类" />
+      <el-step title="填写手工艺品信息" />
+<!--      <el-step title="设置手工艺品属性" />-->
+      <el-step title="设置手工艺品库存" />
     </el-steps>
 
     <GoodsCategory

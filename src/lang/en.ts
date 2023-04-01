@@ -8,7 +8,9 @@ export default {
     category: 'Goods Category',
     orderManagement: 'Order Manage',
     orderList: 'Order List',
-    chatMessage: 'News List'
+    chatMessage: 'News List',
+    couponManagement: 'Coupon Manage',
+    couponList: 'Coupon List'
   },
   buyerRoute: {
     dashboard: 'Dashboard',
@@ -20,7 +22,10 @@ export default {
     cartInfo: 'Cart Info',
     orderManagement: 'Order Manage',
     orderInfo: 'Order Info',
-    chatMessage: 'News List'
+    chatMessage: 'News List',
+    couponManagement: 'Coupon Manage',
+    couponList: 'Coupon List',
+    myCoupon: 'My Coupon',
   },
   // 登录页面国际化
   login: {

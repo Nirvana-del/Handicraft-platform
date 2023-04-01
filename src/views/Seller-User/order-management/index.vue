@@ -167,11 +167,11 @@ onMounted(() => {
       v-loading="loading"
       :data="orderList"
       border>
-      <el-table-column type="expand" width="100" label="订单商品">
+      <el-table-column type="expand" width="100" label="订单手工艺品">
         <template #default="scope">
           <el-table :data="scope.row.orderItems" border>
             <el-table-column label="序号" type="index" width="100"/>
-            <el-table-column label="商品编号" align="center" prop="id"/>
+            <el-table-column label="手工艺品编号" align="center" prop="id"/>
             <el-table-column label="图片" prop="picUrl">
               <template #default="scope">
                 <img :src="scope.row.picUrl" width="40" alt=""/>
@@ -204,7 +204,7 @@ onMounted(() => {
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="payPrice" label="商品数量">
+      <el-table-column align="center" prop="payPrice" label="手工艺品数量">
         <template #default="scope">
           {{ scope.row.totalQuantity }}
         </template>

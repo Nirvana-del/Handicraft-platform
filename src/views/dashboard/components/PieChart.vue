@@ -1,7 +1,7 @@
 <!-- 饼图 -->
 <template>
   <el-card>
-    <template #header> {{isSeller ? '最近7天产品销量' : '最近7天购买商品总数'}} </template>
+    <template #header> {{isSeller ? '最近7天产品销量' : '最近7天购买手工艺品总数'}} </template>
     <div :id="id" :class="className" :style="{ height, width }" />
   </el-card>
 </template>

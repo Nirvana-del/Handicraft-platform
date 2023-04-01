@@ -134,12 +134,23 @@ export function cancelOrderApi(orderId: string) {
   });
 }
 /**
- * 买家支付订单
+ * 买家直接支付订单
  *
  */
 export function payOrderApi(orderId: string) {
   return request({
     url: `/handiraft/pay/pay/${orderId}`,
+    method: 'get'
+  });
+}
+
+/**
+ * 买家优惠券支付订单
+ *
+ */
+export function payOrderByCouponApi(orderId: string, couponId: string) {
+  return request({
+    url: `/handiraft/pay/pay/${orderId}/${couponId}`,
     method: 'get'
   });
 }

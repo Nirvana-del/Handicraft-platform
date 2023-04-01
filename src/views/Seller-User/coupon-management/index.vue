@@ -14,7 +14,6 @@ import {
   Plus,
 } from '@element-plus/icons-vue';
 import {getCouponListApi, sellerAddCouponApi, sellerDeleteCouponApi, sellerUpdateCouponApi} from "@/api/coupon";
-import {addCategory, deleteCategories, listCategories, updateCategories} from "@/api/handicrafts/category";
 
 const dataFormRef = ref(ElForm);
 
@@ -32,16 +31,32 @@ const state = reactive({
   },
   formData: {
     id: undefined,
-    name: undefined
+    name: undefined,
+    circulation: undefined,
+    discount: undefined,
   },
   rules: {
     name: [
       {
         required: true,
-        message: '请输入分类名字',
+        message: '请输入优惠券名字',
         trigger: 'blur',
       },
-    ]
+    ],
+    circulation: [
+      {
+        required: true,
+        message: '请选择优惠券数量',
+        trigger: 'blur',
+      },
+    ],
+    discount: [
+      {
+        required: true,
+        message: '请选择优惠券折扣',
+        trigger: 'blur',
+      },
+    ],
   },
 });
 
@@ -55,9 +70,9 @@ const {
 } = toRefs(state);
 
 async function getCouponList() {
-  const res = await listCategories()
-  console.log(res.data)
-  couponList.value = res.data.categories
+  const res = await getCouponListApi()
+  console.log(res.data.coupons)
+  couponList.value = res.data.coupons
 }
 
 const handleQuery = async () => {
@@ -77,21 +92,24 @@ function handleAdd() {
 
 async function handleUpdate(row: any) {
   isEdit.value = true
-  const {name} = row
+  const {name, discount, circulation} = row
   formData.value.name = name
+  formData.value.discount = discount
+  formData.value.circulation = circulation
   formData.value.id = row.id
   dialog.value.visible = true
 }
 
 function handleDelete(row: any) {
   const id = row.id;
-  ElMessageBox.confirm('是否确认删除选中的分类?', '警告', {
+  console.log(id)
+  ElMessageBox.confirm('是否确认删除选中的优惠券?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
     .then(function () {
-      return deleteCategories(id);
+      return sellerDeleteCouponApi(id);
     })
     .then(() => {
       ElMessage.success('删除成功');
@@ -105,17 +123,15 @@ function closeDialog() {
   state.dialog.visible = false;
 }
 
-async function handleAddCate() {
-  console.log(formData.value)
-  await addCategory(formData.value)
+async function sellerAddCoupon() {
+  await sellerAddCouponApi(formData.value)
   await handleQuery()
   ElMessage.success('新增成功')
   dialog.value.visible = false
 }
 
-async function handleUpdateCate() {
-  console.log(formData.value)
-  await updateCategories(formData.value)
+async function sellerUpdateCoupon() {
+  await sellerUpdateCouponApi(formData.value)
   await handleQuery()
   ElMessage.success('修改成功')
   dialog.value.visible = false
@@ -124,11 +140,9 @@ async function handleUpdateCate() {
 function submitForm() {
   dataFormRef.value.validate(async (valid: any) => {
     if (!isEdit.value) {
-      // console.log(formData.value)
-      handleAddCate()
+      sellerAddCoupon()
     } else {
-      // console.log(formData.value)
-      handleUpdateCate()
+      sellerUpdateCoupon()
     }
   })
 }
@@ -150,9 +164,17 @@ function submitForm() {
         :data="couponList"
         border
       >
-        <el-table-column label="分类ID" prop="id" align="center"/>
-        <el-table-column label="分类名称" prop="name" align="center"/>
-
+        <el-table-column width="120" label="商家" align="center" prop="seller">
+        </el-table-column>
+        <el-table-column label="优惠券名称" prop="name" align="center"/>
+        <el-table-column label="折扣" min-width="100" align="center">
+          <template v-slot="{row}">
+            {{ row.discount * 10 }}折
+          </template>
+        </el-table-column>
+        <el-table-column label="数量（张）" prop="circulation" min-width="100" align="center"/>
+        <el-table-column label="已领取（张）" prop="receivedCount" min-width="100" align="center"/>
+        <el-table-column label="已使用（张）" prop="usedCount" min-width="100" align="center"/>
         <el-table-column label="操作" width="200" align="center">
           <template #default="scope">
             <el-button
@@ -166,7 +188,7 @@ function submitForm() {
               type="danger"
               link
               @click.stop="handleDelete(scope.row)"
-            >删除分类
+            >删除优惠券
             </el-button>
           </template>
         </el-table-column>
@@ -179,9 +201,16 @@ function submitForm() {
         :rules="rules"
         label-width="100px"
       >
-        <el-form-item label="分类名称" prop="name">
+        <el-form-item label="优惠券名称" prop="name">
           <el-input v-model="formData.name"/>
         </el-form-item>
+        <el-form-item label="优惠券数量" prop="circulation">
+          <el-input-number v-model="formData.circulation" :min="1" :max="10" placeholder="最小为 1"/>
+        </el-form-item>
+        <el-form-item label="优惠券折扣" prop="discount">
+          <el-input-number :min="0.1" :max="1" step="0.1" v-model="formData.discount" placeholder="填写小数"/>
+        </el-form-item>
+
       </el-form>
       <template #footer>
         <div class="dialog-footer">

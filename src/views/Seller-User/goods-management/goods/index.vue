@@ -1,4 +1,4 @@
-<!--商品列表-->
+<!--手工艺品列表-->
 <script lang="ts">
 
 export default {

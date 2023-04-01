@@ -10,7 +10,7 @@
       />
       <div style="margin-top: 20px">
         <el-link type="info" :underline="false" v-show="pathLabels.length > 0"
-        >您选择的商品分类:
+        >您选择的手工艺品分类:
         </el-link
         >
         <el-link
@@ -30,7 +30,7 @@
     </div>
     <div class="component-container__footer">
       <el-button type="primary" @click="handleNext"
-      >下一步，填写商品信息
+      >下一步，填写手工艺品信息
       </el-button
       >
     </div>
@@ -101,13 +101,13 @@ const categoryRef = ref(ElCascaderPanel);
 
 function handleCategoryChange() {
   const checkNode = categoryRef.value.getCheckedNodes()[0];
-  state.pathLabels = checkNode.pathLabels; // 商品分类选择层级提示
+  state.pathLabels = checkNode.pathLabels; // 手工艺品分类选择层级提示
   goodsInfo.value.categoryId = checkNode.value;
 }
 
 function handleNext() {
   if (!goodsInfo.value.categoryId) {
-    ElMessage.warning('请选择商品分类');
+    ElMessage.warning('请选择手工艺品分类');
     return false;
   }
   emit('next');

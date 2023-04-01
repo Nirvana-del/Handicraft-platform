@@ -3,7 +3,7 @@
     <div class="component-container__main">
       <!--      <el-card class="box-card">-->
       <!--        <template #header>-->
-      <!--          <span>商品规格</span>-->
+      <!--          <span>手工艺品规格</span>-->
       <!--          <el-button-->
       <!--            :icon="Plus"-->
       <!--            type="success"-->
@@ -117,7 +117,7 @@
 
       <el-card class="box-card">
         <template #header>
-          <span>商品库存</span>
+          <span>手工艺品库存</span>
         </template>
         <div>
           <el-input v-model="goodsInfo.stock" placeholder="输入库存值"/>
@@ -141,7 +141,7 @@
         <!--            >-->
         <!--            </el-table-column>-->
 
-        <!--            <el-table-column label="商品编码" align="center">-->
+        <!--            <el-table-column label="手工艺品编码" align="center">-->
         <!--              <template #default="scope">-->
         <!--                <el-form-item-->
         <!--                  :prop="'skuList[' + scope.$index + '].skuSn'"-->
@@ -178,7 +178,7 @@
       </el-card>
     </div>
     <div class="component-container__footer">
-      <el-button @click="handlePrev">上一步，设置商品属性</el-button>
+      <el-button @click="handlePrev">上一步，设置手工艺品属性</el-button>
       <el-button type="primary" @click="submitForm">提交</el-button>
     </div>
   </div>
@@ -232,10 +232,10 @@ const state = reactive({
       value: [{required: true, message: '请输入规格值', trigger: 'blur'}],
     },
     sku: {
-      skuSn: [{required: true, message: '请输入商品编号', trigger: 'blur'}],
-      price: [{required: true, message: '请输入商品价格', trigger: 'blur'}],
+      skuSn: [{required: true, message: '请输入手工艺品编号', trigger: 'blur'}],
+      price: [{required: true, message: '请输入手工艺品价格', trigger: 'blur'}],
       stockNum: [
-        {required: true, message: '请输入商品库存', trigger: 'blur'},
+        {required: true, message: '请输入手工艺品库存', trigger: 'blur'},
       ],
     },
   },
@@ -249,13 +249,13 @@ const {rules} = toRefs(state);
 watch(
   () => goodsInfo.value.categoryId,
   (newVal) => {
-    // 商品编辑不加载分类下的规格
+    // 手工艺品编辑不加载分类下的规格
     const goodsId = goodsInfo.value.id;
     if (goodsId) {
       return false;
     }
     if (newVal) {
-      // type=1 商品分类下的规格
+      // type=1 手工艺品分类下的规格
       // listAttributes({ categoryId: newVal, type: 1 }).then((response) => {
       //   const specList = response.data;
       //   if (specList && specList.length > 0) {
@@ -324,22 +324,22 @@ const submitForm = () => {
   let submitsData = Object.assign({}, goodsInfo.value);
   const goodsId = goodsInfo.value.id;
   if (goodsId) {
-    // 编辑商品提交
+    // 编辑手工艺品提交
     updateSpu(submitsData).then(() => {
       router.push({path: '/goods-management/goods'});
       ElNotification({
         title: '提示',
-        message: '编辑商品成功',
+        message: '编辑手工艺品成功',
         type: 'success',
       });
     });
   } else {
-    // 新增商品提交
+    // 新增手工艺品提交
     addSpu(submitsData).then(() => {
       router.push({path: '/goods-management/goods'});
       ElNotification({
         title: '提示',
-        message: '新增商品成功',
+        message: '新增手工艺品成功',
         type: 'success',
       });
     });
@@ -363,7 +363,7 @@ const submitForm = () => {
   // }
 
   /**
-   *  根据商品规格笛卡尔积生成SKU列表
+   *  根据手工艺品规格笛卡尔积生成SKU列表
    *
    * 规格列表：
    * [
@@ -575,19 +575,19 @@ const submitForm = () => {
   // };
 
   /**
-   * 商品表单提交
+   * 手工艺品表单提交
    */
 // function submitForm() {
-//   // 判断商品SKU列表是否为空
+//   // 判断手工艺品SKU列表是否为空
 //   if (!state.skuForm.skuList || state.skuForm.skuList.length === 0) {
-//     ElMessage.warning('未添加商品库存');
+//     ElMessage.warning('未添加手工艺品库存');
 //     return false;
 //   }
 //   specFormRef.value.validate((specValid: any) => {
 //     if (specValid) {
 //       skuFormRef.value.validate((skuValid: any) => {
 //         if (skuValid) {
-//           // 重组商品的规格和SKU列表
+//           // 重组手工艺品的规格和SKU列表
 //           let submitsData = Object.assign({}, goodsInfo.value);
 //           delete submitsData.specList;
 //           delete submitsData.skuList;
@@ -613,22 +613,22 @@ const submitForm = () => {
 //           console.log('提交数据', submitsData);
 //           const goodsId = goodsInfo.value.id;
 //           if (goodsId) {
-//             // 编辑商品提交
+//             // 编辑手工艺品提交
 //             updateSpu(goodsId, submitsData).then(() => {
 //               router.push({ path: '/pms/goods' });
 //               ElNotification({
 //                 title: '提示',
-//                 message: '编辑商品成功',
+//                 message: '编辑手工艺品成功',
 //                 type: 'success',
 //               });
 //             });
 //           } else {
-//             // 新增商品提交
+//             // 新增手工艺品提交
 //             addSpu(submitsData).then(() => {
 //               router.push({ path: '/pms/goods' });
 //               ElNotification({
 //                 title: '提示',
-//                 message: '新增商品成功',
+//                 message: '新增手工艺品成功',
 //                 type: 'success',
 //               });
 //             });

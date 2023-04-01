@@ -232,7 +232,9 @@ onMounted(() => {
         <el-table-column label="商品类目" prop="handicrafts.categoryName" min-width="100" align="center"/>
         <el-table-column align="center" label="零售价" prop="handicrafts.originPrice">
           <template #default="scope">{{
-              moneyFormatter(scope.row.handicrafts.originPrice)
+               // moneyFormatter(scope.row.handicrafts.originPrice)
+              // 改为
+              scope.row.handicrafts.originPrice
             }}
           </template>
         </el-table-column>

@@ -2,25 +2,30 @@ export default {
   // 路由国际化
   sellerRoute: {
     dashboard: '首页',
-    handicrafts: '商品管理',
-    goodsList: '商品列表',
-    grounding: '商品上架',
-    category: '商品分类',
+    handicrafts: '手工艺品管理',
+    goodsList: '手工艺品列表',
+    grounding: '手工艺品上架',
+    category: '手工艺品分类',
     orderManagement: '订单管理',
     orderList: '订单列表',
-    chatMessage: '消息列表'
+    chatMessage: '消息列表',
+    couponManagement: '优惠券管理',
+    couponList: '优惠券列表',
   },
   buyerRoute: {
     dashboard: '首页',
-    goodsSearch: '商品查询',
-    goodsList: '商品列表',
+    goodsSearch: '手工艺品查询',
+    goodsList: '手工艺品列表',
     addressManagement: '地址管理',
     addressInfo: '地址信息',
     cartManagement: '购物车管理',
     cartInfo: '我的购物车',
     orderManagement: '订单管理',
     orderInfo: '我的订单',
-    chatMessage: '消息列表'
+    chatMessage: '消息列表',
+    couponManagement: '优惠券管理',
+    couponList: '优惠券列表',
+    myCoupon: '我的优惠券',
   },
   // 登录页面国际化
   login: {
